@@ -1,35 +1,40 @@
 // dummy lights & rooms for testing until I plug in the Hue API
-import "dotenv/config";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
-import { PrismaClient } from "../generated/prisma/client";
+import { prisma } from "../lib/prisma";
 
-const connectionString = `${process.env.DATABASE_URL}`;
-const adapter = new PrismaBetterSqlite3(connectionString);
-const prisma = new PrismaClient({ adapter });
 async function main() {
-  const light1 = await prisma.light.upsert({
-    where: { name: "Living Room Ceiling 1" },
-    update: {},
-    create: {
-      hueId: "HUE-LIGHT-1",
-      name: "Living Room Ceiling 1",
-      isOn: false,
-      dimming: { brightness: 0 },
+  const room1 = await prisma.room.create({
+    data: {
+      hueId: "HUE-ROOM-1",
+      name: "Living Room",
     },
   });
+  console.log("created: ", room1);
 
-  const light2 = await prisma.light.upsert({
-    where: { name: "Living Room Ceiling 2" },
-    update: {},
-    create: {
-      hueId: "HUE-LIGHT-2",
-      name: "Living Room Ceiling 2",
+  const light1 = await prisma.light.create({
+    data: {
+      hueId: "HUE-LIGHT-1",
       isOn: false,
       dimming: { brightness: 0 },
+      color: { xy: { x: 0.0, y: 0.0 } },
+      name: "Living Room Ceiling 1",
+      roomId: 1,
     },
   });
+  console.log("created: ", light1);
+
+  const light2 = await prisma.light.create({
+    data: {
+      hueId: "HUE-LIGHT-2",
+      isOn: false,
+      dimming: { brightness: 0 },
+      color: { xy: { x: 0.0, y: 0.0 } },
+      name: "Living Room Ceiling 2",
+      roomId: 1,
+    },
+  });
+  console.log("created: ", light2);
 }
-console.log({ light1, light2 });
+
 main()
   .then(async () => {
     await prisma.$disconnect();

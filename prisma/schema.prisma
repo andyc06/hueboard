@@ -16,8 +16,8 @@ model Light {
   id    Int  @id @default(autoincrement())
   hueId String // @unique
   isOn  Boolean
-  dimming Json? // { brightness: 100 } 0-100 integer
-  color Json? // { xy: { x: 0.000, y: 0.000} }
+  dimming Json // { brightness: 100 } 0-100 integer
+  color Json // { xy: { x: 0.000, y: 0.000} }
   name  String?
   room Room? @relation(fields: [roomId], references: [id])
   roomId Int
