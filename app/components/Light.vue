@@ -5,13 +5,10 @@ const props = defineProps<{
   isOn: boolean;
 }>();
 
-// This replaces BOTH modelValue + update:modelValue
 const checked = defineModel<boolean>();
 </script>
 
 <template>
-  <div>
-    <input type="checkbox" v-model="checked" />
-    name: {{ name }} | on: {{ isOn }}
-  </div>
+  <input type="checkbox" v-model="checked" />
+  <div>name: {{ name }} | on: {{ isOn }}</div>
 </template>
